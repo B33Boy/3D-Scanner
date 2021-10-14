@@ -3,7 +3,7 @@ import os
 
 vid = cv2.VideoCapture(0)
 
-dir = r'res/checkerboard/'
+dir = r'res/calibration_input/'
 
 img_count = 0
 
@@ -18,14 +18,15 @@ while(True):
     pressedKey = cv2.waitKey(1) & 0xFF
     if pressedKey == ord('q'):
         break
-    elif pressedKey == ord(' '):
+    elif pressedKey == ord('c'):
         cv2.imwrite(dir + f'{img_count}.jpg', frame)
         img_count+=1
 
-    elif pressedKey == ord(' '):
+    elif pressedKey == ord('z'):
         if img_count > 0:
-            os.remove(dir + f'{img_count}.jpg')
             img_count-=1
+            os.remove(dir + f'{img_count}.jpg')
+            
 
 vid.release()
 cv2.destroyAllWindows()
