@@ -87,7 +87,7 @@ Run `python scripts/collect_cali.py` to take between 10 to 20 images of the 7x9 
 - press `c` to take an image
 - press `z` to pop the last image
 
-Next run `python scripts/calibrate.py` to run the calibration algorithm. The camera matrix, disortion coefficients, rotation, and translation vectors will be exported to `res/calibration_output/` as text files.
+Next run `python scripts/calibrate.py` to run the calibration algorithm. The camera matrix, disortion coefficients, rotation, and translation vectors will be exported to `res/calibration_output/`.
 
 <!-- LICENSE -->
 ## License

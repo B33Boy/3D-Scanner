@@ -103,11 +103,9 @@ print(r_vecs)
 print("\n Translation Vectors:")
 print(t_vecs)
 
-np.savetxt('camera_matrix.out', matrix, delimiter=',')
-np.savetxt('dist_coeff.out', distortion, delimiter=',')
-np.savetxt('rot_vec.out', r_vecs, delimiter=',')
-np.savetxt('trans_vec.out', t_vecs, delimiter=',')
+# np.savetxt('camera_matrix.out', matrix, delimiter=',')
+# np.savetxt('dist_coeff.out', distortion, delimiter=',')
+# np.savetxt('rot_vec.out', r_vecs, delimiter=',')
+# np.savetxt('trans_vec.out', t_vecs, delimiter=',')
 
-
-
-
+np.savez('../res/calibration_output/cam_params.npz', mtx=matrix, dist=distortion, rvecs=r_vecs, tvecs=t_vecs)
