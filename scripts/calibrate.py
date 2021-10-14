@@ -108,4 +108,4 @@ print(t_vecs)
 # np.savetxt('rot_vec.out', r_vecs, delimiter=',')
 # np.savetxt('trans_vec.out', t_vecs, delimiter=',')
 
-np.savez('../res/calibration_output/cam_params.npz', mtx=matrix, dist=distortion, rvecs=r_vecs, tvecs=t_vecs)
+np.savez('res/calibration_output/cam_params.npz', mtx=matrix, dist=distortion, rvecs=r_vecs, tvecs=t_vecs)
