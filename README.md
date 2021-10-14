@@ -113,8 +113,8 @@ Acknowledge Dr. Barari & Cody Berry here
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/B33Boy/3D-Scanner.svg?style=for-the-badge
 [contributors-url]: https://github.com/B33Boy/3D-Scanner/graphs/contributors
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/B33Boy/3D-Scanner.svg?style=for-the-badge
+[license-url]: https://github.com/B33Boy/3D-Scanner/blob/main/LICENSE.txt
 
