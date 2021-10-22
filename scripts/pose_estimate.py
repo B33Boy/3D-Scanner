@@ -25,6 +25,9 @@ for fname in glob.glob('res/calibration_input/*.jpg'):
     img = cv2.imread(fname)
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     ret, corners = cv2.findChessboardCorners(gray, (7,9),None)
+    # print(corners.shape)
+    # print(corners[0])
+    # print("\n\n\n")
 
     if ret == True:
         corners2 = cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
