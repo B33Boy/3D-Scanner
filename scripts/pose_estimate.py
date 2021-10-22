@@ -46,20 +46,18 @@ for fname in glob.glob('res/calibration_input/*.jpg'):
    
 cv2.destroyAllWindows()
 '''
-
 ARUCO_PARAMETERS = aruco.DetectorParameters_create()
 ARUCO_DICT = aruco.Dictionary_get(aruco.DICT_5X5_50)
 
-board = aruco.GridBourd_create(
+board = aruco.GridBoard_create(
     markersX = 6,
     markersY = 8,
     markerLength = 0.04,
-    markerSeperation = 0.02,
+    markerSeparation = 0.02,
     dictionary = ARUCO_DICT)
 
 cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
 cam = cv2.VideoCapture(0)
-cam.set(CAP_PROP_AUTOFOCUS)
 
 while(cam.isOpened()):
     ret, img = cam.read()
