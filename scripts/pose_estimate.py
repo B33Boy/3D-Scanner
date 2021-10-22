@@ -53,7 +53,7 @@ cv2.destroyAllWindows()
 ARUCO_PARAMETERS = aruco.DetectorParameters_create()
 ARUCO_DICT = aruco.Dictionary_get(aruco.DICT_5X5_50)
 
-board = aruco.GridBourd_create(
+board = aruco.GridBoard_create(
     markersX = 6,
     markersY = 8,
     markerLength = 0.04,
@@ -69,7 +69,6 @@ while(cam.isOpened()):
     if ret == True:
         grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             
-
         #detect markers
         corners, ids, rejectedPoints = aruco.detectMarkers(grey, ARUCO_DICT, parameters = ARUCO_PARAMETERS)
         #refine detected markers
@@ -96,7 +95,9 @@ while(cam.isOpened()):
             charucoBoard = img
             
         cv2.imshow("charucoboard", charucoBoard)
-        
-        
+        cv2.waitKey(0)
+
+cv2.destroyAllWindows()
+
         
         
