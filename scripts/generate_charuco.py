@@ -3,7 +3,7 @@ import cv2.aruco as aruco
 
 # Create ChArUco board, which is a set of Aruco markers in a chessboard setting
 # meant for calibration
-# the following call gets a ChArUco board of tiles 5 wide X 7 tall
+# the following call gets a ChArUco board of tiles 6 wide X 8 tall
 gridboard = aruco.CharucoBoard_create(
         squaresX=6, 
         squaresY=8, 
@@ -13,9 +13,9 @@ gridboard = aruco.CharucoBoard_create(
 
 # Create an image from the gridboard
 img = gridboard.draw(outSize=(988, 1400))
-cv2.imwrite("test_charuco.jpg", img)
+cv2.imwrite("res/charuco_out/test_charuco.jpg", img)
 
-# Display the image to us
+# Display the image
 cv2.imshow('Gridboard', img)
 # Exit on any key
 cv2.waitKey(0)
