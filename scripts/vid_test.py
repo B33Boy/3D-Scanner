@@ -1,3 +1,5 @@
+# Generic skeleton script for later use
+
 # import the opencv library
 import cv2
   
