@@ -57,7 +57,7 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = "res/calibration_theta/dist_{}.png".format(D[count])
+        img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
