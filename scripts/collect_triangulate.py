@@ -15,9 +15,8 @@ def extract_laser(frame):
     
     # Isolate the red channel
     img = frame[...,2]
-    ret,img = cv2.threshold(img,230,255,0)
+    ret,img = cv2.threshold(img,225,255,0)
 
-    print(img.shape)
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
 
@@ -53,7 +52,7 @@ while True:
     k = cv2.waitKey(1)
 
     # Exit if 'q' is pressed
-    if k%256 == 81: 
+    if k%256 == 113: 
         print("Escape hit, closing...")
         break
     # Capture image if spacebar is pressed
