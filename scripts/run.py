@@ -40,7 +40,6 @@ while(True):
     # by frame
     ret, frame = vid.read()
 
-
     laser = extract_laser(frame)
     
     # Display the resulting frame
