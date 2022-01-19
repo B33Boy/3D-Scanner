@@ -98,7 +98,7 @@ while True:
         
         # Get distance
         pix_dist = POI - centre_x
-        theta = np.multiply(theta_coeff[:,0], pix_dist) + theta_coeff[:,1]
+        theta = np.multiply(theta_coeff[86:335,0], pix_dist[86:335]) + theta_coeff[86:335,1]
         D = X*np.tan(theta)
         print(D)
     
