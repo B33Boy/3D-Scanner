@@ -18,7 +18,6 @@ def extract_laser(frame):
     img = frame[...,2]
     ret,img = cv2.threshold(img,230,255,0)
 
-    print(img.shape)
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
 
@@ -29,20 +28,20 @@ def extract_laser(frame):
     out[np.arange(bppr.shape[0]), bppr] = 255
     
     # Bitwise-AND mask and original image
-    res = cv2.bitwise_and(out,out, mask= mask)
+#     res = cv2.bitwise_and(out,out, mask= mask)
     
-    return res
-    
+    return out, bppr
 
+    
 while(True):
       
     # Capture the video frame
     # by frame
     ret, frame = vid.read()
 
-
     laser = extract_laser(frame)
     
+
     # Display the resulting frame
     cv2.imshow('frame', laser)
     
