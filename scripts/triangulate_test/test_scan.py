@@ -1,38 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 import cv2
 
-
-
-def extract_laser(frame): 
-    
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    
-    # define range of blue color in HSV
-    lower_colour = np.array([146, 62, 0])
-    upper_colour = np.array([255, 255, 255])
-    
-    # Threshold the HSV image to get only get red colour
-    mask = cv2.inRange(hsv, lower_colour, upper_colour)
-    
-    # Isolate the red channel
-    img = frame[...,2]
-    ret,img = cv2.threshold(img,230,255,0)
-
-    # Create emptry array of zeros of same size as img
-    out = np.zeros_like(img)
-
-    # For each row, get the position of the highest intensity
-    bppr = np.argmax(img, axis=1)
-
-    # Set the highest intensity pixel locations to 255
-    out[np.arange(bppr.shape[0]), bppr] = 255
-    
-    # Bitwise-AND mask and original image
-#     res = cv2.bitwise_and(out,out, mask= mask)
-    
-    return out, bppr
 
 def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 
@@ -47,7 +16,7 @@ with np.load('res/calibration_theta_output/theta_params.npz') as X:
     theta_coeff = X['theta_coeff']
 
 # Load previously saved data
-with np.load('res/calibration_output/cam_params.npz') as X:
+with np.load('res/cal_out/cam_params.npz') as X:
     mtx, dist, rot_vectors, trans_vectors = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
 
 # print(mtx.shape)
@@ -65,7 +34,6 @@ centre_x = w/2
 #dist b/w camera and laser is 4 in
 X = 4
 
-
 # Undistort Camera
 new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
@@ -80,7 +48,7 @@ while True:
 
     # Next extract the laser + matrix containing points of interest
     frame, POI = extract_laser(frame)
-
+    
     cv2.imshow("cam_img", frame)
 
     k = cv2.waitKey(1)
@@ -99,6 +67,7 @@ while True:
         # Get distance
         pix_dist = POI - centre_x
         theta = np.multiply(theta_coeff[86:335,0], pix_dist[86:335]) + theta_coeff[86:335,1]
+        # print(theta.shape)
         D = X*np.tan(theta)
         print(D)
     

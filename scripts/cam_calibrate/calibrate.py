@@ -1,3 +1,5 @@
+#REFERENCE: https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+
 # Import required modules
 import cv2
 import numpy as np
@@ -10,9 +12,9 @@ CHECKERBOARD = (7, 9)
 
 # frameSize = (640,480)
 
-input_dir = r'res/calibration_input/'
+input_dir = r'res/cal_in/'
 
-output_dir = r'res/calibration_output/'
+output_dir = r'res/cal_out/'
 
 # stop the iteration when specified
 # accuracy, epsilon, is reached or
@@ -108,4 +110,4 @@ print(t_vecs)
 # np.savetxt('rot_vec.out', r_vecs, delimiter=',')
 # np.savetxt('trans_vec.out', t_vecs, delimiter=',')
 
-np.savez('res/calibration_output/cam_params.npz', mtx=matrix, dist=distortion, rvecs=r_vecs, tvecs=t_vecs)
+np.savez('res/cal_out/cam_params.npz', mtx=matrix, dist=distortion, rvecs=r_vecs, tvecs=t_vecs)

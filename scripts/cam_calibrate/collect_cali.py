@@ -3,7 +3,7 @@ import os
 
 vid = cv2.VideoCapture(0)
 
-dir = r'res/calibration_input/'
+output_dir = r'res/cal_in/'
 
 img_count = 0
 
@@ -19,13 +19,13 @@ while(True):
     if pressedKey == ord('q'):
         break
     elif pressedKey == ord('c'):
-        cv2.imwrite(dir + f'{img_count}.jpg', frame)
+        cv2.imwrite(output_dir + f'{img_count}.jpg', frame)
         img_count+=1
 
     elif pressedKey == ord('z'):
         if img_count > 0:
             img_count-=1
-            os.remove(dir + f'{img_count}.jpg')
+            os.remove(output_dir + f'{img_count}.jpg')
             
 
 vid.release()
@@ -33,6 +33,6 @@ cv2.destroyAllWindows()
 
 
 print("The following images were saved")
-print(os.listdir(dir))
+print(os.listdir(output_dir))
 print("Finished")
 
