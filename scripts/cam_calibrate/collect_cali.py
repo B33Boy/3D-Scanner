@@ -12,7 +12,9 @@ print("Starting")
 while(True):
       
     _, frame = vid.read()
-  
+    
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
+
     cv2.imshow('frame', frame)
 
     pressedKey = cv2.waitKey(1) & 0xFF
