@@ -24,8 +24,8 @@ with np.load('res/cal_out/cam_params.npz') as X:
 cam = cv2.VideoCapture(0)
 
 # Obtain the width and height of the camera
-w = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
-h = cam.get(cv2.CAP_PROP_FRAME_HEIGHT )
+w = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+h = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 # Undistort Camera Matrix + ROI
 new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
