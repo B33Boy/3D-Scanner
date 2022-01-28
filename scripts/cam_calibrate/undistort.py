@@ -18,7 +18,7 @@ def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
     dst = cv2.undistort(img, mtx, dist, None, new_mtx)
     # crop the image
     x, y, w, h = roi
-    return dst#[y:y+h, x:x+w]
+    # return dst[y:y+h, x:x+w]
 
 
 # Camera params
@@ -40,6 +40,9 @@ while True:
     if not ret:
         print("failed to grab frame")
         break
+    
+    # Rotate image 180 degrees
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
 
     # First undistort
     undist_frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
