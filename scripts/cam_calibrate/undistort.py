@@ -21,10 +21,6 @@ def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
     # return dst[y:y+h, x:x+w]
 
 
-# Camera params
-w = 640
-h = 480
-
 
 # Undistort Camera Matrix + ROI
 new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
@@ -33,6 +29,10 @@ print(roi)
 print("=======================")
 
 cam = cv2.VideoCapture(0)
+
+w = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
+h = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
+print("height=", h, " width=", w)
 
 while True:
     
@@ -44,12 +44,17 @@ while True:
     # Rotate image 180 degrees
     frame = cv2.rotate(frame, cv2.ROTATE_180)
 
-    # First undistort
-    undist_frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
-    print("Shape of undistorted frame: ",undist_frame.shape)
+    # # First undistort
+    # undist_frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
+    # print("Shape of undistorted frame: ",undist_frame.shape)
+    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+    dst = cv2.undistort(frame, mtx, dist, None, newcameramtx)
+    # crop the image
+    x, y, w, h = roi
+    dst = dst[y:y+h, x:x+w]
 
     cv2.imshow("distorted", frame)
-    cv2.imshow("undistorted", undist_frame)
+    cv2.imshow("undistorted", dst)
 
     k = cv2.waitKey(1)
 
