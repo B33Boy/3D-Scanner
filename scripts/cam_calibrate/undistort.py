@@ -22,17 +22,18 @@ def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 
 
 
+cam = cv2.VideoCapture(0)
+
+w = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
+h = cam.get(cv2.CAP_PROP_FRAME_HEIGHT )
+print("height=", h, " width=", w)
+
 # Undistort Camera Matrix + ROI
 new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 print(new_mtx)
 print(roi)
 print("=======================")
 
-cam = cv2.VideoCapture(0)
-
-w = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
-h = cam.get(cv2.CAP_PROP_FRAME_WIDTH )
-print("height=", h, " width=", w)
 
 while True:
     
