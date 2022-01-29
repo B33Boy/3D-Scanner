@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 # Load theta calibration parameters
-with np.load('res/calibration_theta_output/theta_params.npz') as X:
+with np.load('res/cal_theta_out/theta_params.npz') as X:
     theta_coeff = X['theta_coeff']
 
 # Load camera calibration data from cam_out folder
@@ -59,7 +59,7 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/calibration_theta_output/test_scan_{count}.png"
+        img_name = f"res/cal_theta_out/test_scan_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
