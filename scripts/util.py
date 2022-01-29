@@ -47,3 +47,14 @@ def extract_laser_no_thresh(frame):
     
     
     return out, bppr
+
+
+
+def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
+
+    # undistort
+    dst = cv2.undistort(img, mtx, dist, None, new_mtx)
+    
+    # crop the image
+    x, y, w, h = roi
+    return dst[y:y+h, x:x+w]

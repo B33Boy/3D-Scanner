@@ -1,47 +1,47 @@
+# Code required to import from root of scripts/ folder when working in a subfolder within scripts/
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from util import extract_laser, undistort_camera
+
+# External libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-
-def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
-
-    # undistort
-    dst = cv2.undistort(img, mtx, dist, None, new_mtx)
-    # crop the image
-    x, y, w, h = roi
-    return dst[y:y+h, x:x+w]
-
-# Load calibration matrix
+# Load theta calibration parameters
 with np.load('res/calibration_theta_output/theta_params.npz') as X:
     theta_coeff = X['theta_coeff']
 
-# Load previously saved data
+# Load camera calibration data from cam_out folder
 with np.load('res/cal_out/cam_params.npz') as X:
-    mtx, dist, rot_vectors, trans_vectors = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
+    mtx, dist, rvecs, tvecs = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
 
-# print(mtx.shape)
-# print(dist.shape)
-# print(rot_vectors.shape)
-# print(trans_vectors.shape)
-
+# Start the video capture
 cam = cv2.VideoCapture(0)
-count = 0
+
+# Obtain the width and height of the camera
+w = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+h = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# Get new camera matrix
+new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
 # Camera params
-w = 640
-h = 480
 centre_x = w/2
 #dist b/w camera and laser is 4 in
 X = 4
 
-# Undistort Camera
-new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+count = 0
 
 while True:
     ret, frame = cam.read()
     if not ret:
         print("failed to grab frame")
         break
+    
+    # Rotate image 180 degrees
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
 
     # First undistort
     frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
@@ -70,9 +70,6 @@ while True:
         # print(theta.shape)
         D = X*np.tan(theta)
         print(D)
-    
-        
-        
         
 
 cam.release()

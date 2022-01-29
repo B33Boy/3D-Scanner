@@ -3,8 +3,6 @@ import cv2
 
 # https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
 
-
-
 def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 
     # undistort
@@ -18,7 +16,6 @@ def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 # Load camera calibration data from cam_out folder
 with np.load('res/cal_out/cam_params.npz') as X:
     mtx, dist, rvecs, tvecs = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
-
 
 # Start the video capture
 cam = cv2.VideoCapture(0)
@@ -43,7 +40,7 @@ while True:
 
     # First undistort
     undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
-
+    print(undist.shape)
     cv2.imshow("distorted", frame)
     cv2.imshow("undistorted", undist)
 
