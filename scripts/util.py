@@ -49,7 +49,6 @@ def extract_laser_no_thresh(frame):
     return out, bppr
 
 
-
 def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 
     # undistort
