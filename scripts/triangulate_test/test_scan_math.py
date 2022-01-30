@@ -73,7 +73,7 @@ while True:
 
         
         f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
-        d_prime = f_prime*X/POI
+        d_prime = f_prime*X/abs(centre_x-POI)
         print(d_prime)
         
 
