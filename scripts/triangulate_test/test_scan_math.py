@@ -49,7 +49,7 @@ while True:
     frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
     # Next extract the laser + matrix containing points of interest
-    frame, POI = extract_laser(frame)
+    #frame, POI = extract_laser(frame)
     
     cv2.imshow("cam_img", frame)
 
@@ -61,20 +61,21 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/cal_theta_out/test_scan_math_{count}.png"
+        img_name = f"res/laser_samples/test_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
         
+
         # Camera params
-        h, w = frame.shape
-        centre_x = int(w/2)
-        centre_y = int(h/2)
+        #h, w = frame.shape
+        #centre_x = int(w/2)
+        #centre_y = int(h/2)
 
         
-        f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
-        d_prime = f_prime*X/abs(centre_x-POI)
-        print(d_prime)
+        #f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
+        #d_prime = f_prime*X/abs(centre_x-POI)
+        #print(d_prime)
         
 
 cam.release()
