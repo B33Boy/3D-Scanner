@@ -49,7 +49,7 @@ while True:
     frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
     # Next extract the laser + matrix containing points of interest
-    #frame, POI = extract_laser(frame)
+    frame, POI = extract_laser(frame)
     
     cv2.imshow("cam_img", frame)
 
@@ -68,14 +68,14 @@ while True:
         
 
         # Camera params
-        #h, w = frame.shape
-        #centre_x = int(w/2)
-        #centre_y = int(h/2)
+        h, w = frame.shape
+        centre_x = int(w/2)
+        centre_y = int(h/2)
 
         
-        #f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
-        #d_prime = f_prime*X/abs(centre_x-POI)
-        #print(d_prime)
+        f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
+        d_prime = f_prime*X/abs(centre_x-POI)
+        print(d_prime)
         
 
 cam.release()

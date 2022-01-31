@@ -14,7 +14,7 @@ def extract_laser(frame):
     
     # Isolate the red channel
     img = frame[...,2]
-    ret,img = cv2.threshold(img,230,255,0)
+    ret,img = cv2.threshold(img,144,255,0)
 
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
