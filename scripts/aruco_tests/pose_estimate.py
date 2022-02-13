@@ -11,14 +11,18 @@ def customAruco():
     # define an empty custom dictionary with 
     aruco_dict = cv2.aruco.custom_dictionary(0, 5, 1)
     # add empty bytesList array to fill with 3 markers later
-    aruco_dict.bytesList = np.empty(shape = (3, 4, 4), dtype = np.uint8)
+    aruco_dict.bytesList = np.empty(shape = (5, 4, 4), dtype = np.uint8)
     # add new marker(s)
-    mybits = np.array([[1,0,1,0,0],[0,1,0,0,0],[1,0,1,0,0],[1,0,1,1,0],[1,0,0,0,1]], dtype = np.uint8)
+    mybits = np.array([[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,1,1,1]], dtype = np.uint8)
     aruco_dict.bytesList[0] = cv2.aruco.Dictionary_getByteListFromBits(mybits)
-    mybits = np.array([[0,1,1,0,0],[0,0,0,0,0],[0,1,0,0,1],[0,1,0,0,1],[1,1,1,1,0]], dtype = np.uint8)
+    mybits = np.array([[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[0,1,0,0,1]], dtype = np.uint8)
     aruco_dict.bytesList[1] = cv2.aruco.Dictionary_getByteListFromBits(mybits)
-    mybits = np.array([[0,1,1,0,0],[0,1,0,0,1],[0,0,0,0,1],[0,0,1,0,0],[0,1,0,0,0]], dtype = np.uint8)
+    mybits = np.array([[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[0,1,1,1,0]], dtype = np.uint8)
     aruco_dict.bytesList[2] = cv2.aruco.Dictionary_getByteListFromBits(mybits)
+    mybits = np.array([[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,1,1,1],[1,0,0,0,0]], dtype = np.uint8)
+    aruco_dict.bytesList[3] = cv2.aruco.Dictionary_getByteListFromBits(mybits)
+    mybits = np.array([[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,1,1,1],[1,0,1,1,1]], dtype = np.uint8)
+    aruco_dict.bytesList[4] = cv2.aruco.Dictionary_getByteListFromBits(mybits)
     # adjust dictionary parameters for better marker detection
     parameters =  cv2.aruco.DetectorParameters_create()
     parameters.cornerRefinementMethod = 3
@@ -28,7 +32,7 @@ def customAruco():
 
 def main():
     # Initialization value for image. Change to location of image
-    file_name = "Markers\Test_Images\im1-cropped.jpg"
+    file_name = "res\marker_test\marker_4.png"
     aruco_dict, arucoParams = customAruco()
     
     '''
