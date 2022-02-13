@@ -41,12 +41,19 @@ def main():
                                           47/1000,
                                           aruco_dict)
     '''
+    
+    with np.load('res/cal_out/cam_params.npz') as X:
+        camera_matrix, dist_coeffs = [X[i] for i in ('mtx','dist')]
+    
+    print(camera_matrix)
+    print(dist_coeffs)
+    '''
     camera_reader = cv2.FileStorage()
     camera_reader.open("cameraParameters.xml",cv2.FileStorage_READ)
 
     camera_matrix = read_node_matrix( camera_reader, "cameraMatrix" )
     dist_coeffs   = read_node_matrix( camera_reader, "dist_coeffs" )
-    
+    '''
     #camera_matrix = np.array(
      #                    [[focal_length, 0, center[0]],
       #                   [0, focal_length, center[1]],
