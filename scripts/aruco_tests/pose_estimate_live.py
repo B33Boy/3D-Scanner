@@ -43,7 +43,7 @@ while(True):
     ret, frame = vid.read()
 
     # Rotate frame 180 degrees
-    #frame = cv2.rotate(frame, cv2.ROTATE_180)
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(gray, aruco_dict, 
     parameters=arucoParams)
@@ -59,7 +59,7 @@ while(True):
 
 
     # Display the resulting frame
-    cv2.imshow('frame', frame)
+    #cv2.imshow('frame', frame)
       
     # the 'q' button is set as the
     # quitting button you may use any
