@@ -58,7 +58,7 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/marker_test/marker_{count}.png"
+        img_name = f"res/marker_test/marker_{count}_bright.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
