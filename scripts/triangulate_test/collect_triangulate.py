@@ -45,9 +45,11 @@ while True:
     if not ret:
         print("failed to grab frame")
         break
+
+    frame = extract_laser(frame)
+
     # Rotate frame 180 degrees
     frame = cv2.rotate(frame, cv2.ROTATE_180)
-    # frame = extract_laser(frame)
     cv2.imshow("Calibrate_theta", frame)
 
     k = cv2.waitKey(1)
@@ -58,7 +60,7 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/marker_test/marker_15cm_{count}.png"
+        img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
