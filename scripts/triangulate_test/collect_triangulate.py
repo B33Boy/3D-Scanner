@@ -45,7 +45,8 @@ while True:
     if not ret:
         print("failed to grab frame")
         break
-
+    # Rotate frame 180 degrees
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
     # frame = extract_laser(frame)
     cv2.imshow("Calibrate_theta", frame)
 
