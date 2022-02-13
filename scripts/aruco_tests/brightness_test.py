@@ -39,7 +39,7 @@ while(True):
     value = int(cv2.getTrackbarPos('value','controls'))
 
     # Rotate frame 180 degrees
-    frame = cv2.rotate(frame, cv2.ROTATE_180)
+    #frame = cv2.rotate(frame, cv2.ROTATE_180)
 
     frame = increase_brightness(frame, value=value)
 
