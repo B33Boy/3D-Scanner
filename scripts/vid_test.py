@@ -11,6 +11,10 @@ while(True):
     # Capture the video frame
     # by frame
     ret, frame = vid.read()
+
+    # Rotate frame 180 degrees
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
+
     # Display the resulting frame
     cv2.imshow('frame', frame)
       
