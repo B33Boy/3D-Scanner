@@ -54,8 +54,8 @@ while(True):
             rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.015, camera_matrix,dist_coeffs)
             print("Rvec", rvec)
             print("Tvec",  tvec)
-            cv2.aruco.drawDetectedMarkers(frame, corners, ids)
-            cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.01)
+            #cv2.aruco.drawDetectedMarkers(frame, corners, ids)
+            #cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.01)
 
 
     # Display the resulting frame
