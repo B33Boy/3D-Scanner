@@ -34,7 +34,7 @@ fx = new_mtx[0][0]
 fy = new_mtx[1][1]
 f = np.sqrt(fx**2 + fy**2)
 
-count = 0
+count = 1
 
 while True:
     ret, frame = cam.read()
@@ -49,7 +49,7 @@ while True:
     frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
     # Next extract the laser + matrix containing points of interest
-    #frame, POI = extract_laser(frame)
+    frame, POI = extract_laser(frame)
     
     cv2.imshow("cam_img", frame)
 
