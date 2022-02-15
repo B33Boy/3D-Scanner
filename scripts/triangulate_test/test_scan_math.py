@@ -34,7 +34,7 @@ fx = new_mtx[0][0]
 fy = new_mtx[1][1]
 f = np.sqrt(fx**2 + fy**2)
 
-count = 1
+count = 0
 
 while True:
     ret, frame = cam.read()
@@ -61,21 +61,21 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/laser_samples/y_scale_calibration_{count}.png"
+        img_name = f"res/laser_samples/test_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
         
 
-        # # Camera params
-        # h, w = frame.shape
-        # centre_x = int(w/2)
-        # centre_y = int(h/2)
+        # Camera params
+        h, w = frame.shape
+        centre_x = int(w/2)
+        centre_y = int(h/2)
 
         
-        # f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
-        # d_prime = f_prime*X/abs(centre_x-POI)
-        # print(d_prime)
+        f_prime = np.sqrt(f**2 + (centre_y - np.arange(h)**2))
+        d_prime = f_prime*X/abs(centre_x-POI)
+        print(d_prime)
         
 
 cam.release()
