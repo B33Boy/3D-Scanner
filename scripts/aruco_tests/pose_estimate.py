@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import sys
 from cv2 import aruco
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from util import extract_laser, undistort_camera
 
 def read_node_matrix( reader, name ):
     node = reader.getNode( name )
@@ -69,6 +72,13 @@ def main():
     #dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion
     
     frame = cv2.imread(file_name)
+    
+    h,w = frame.shape[:2]
+    new_mtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix,dist_coeffs,(w,h),1, 
+                    (w,h))
+    
+    frame = undistort_camera(frame, camera_matrix, new_mtx, roi, dist_coeffs, w, h)
+    
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(gray, aruco_dict, 
     parameters=arucoParams)
@@ -93,7 +103,7 @@ def main():
         
         
         x = 0
-        change = 2
+        change = 3
         print("Distance between marker", markertvec[x][0], "and", markertvec[x+change][0])
         dist1 = np.linalg.norm(markertvec[x][1]-markertvec[x+change][1])
         print(dist1)
