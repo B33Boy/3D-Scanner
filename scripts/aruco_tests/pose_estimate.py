@@ -103,9 +103,9 @@ def main():
         
         
         x = 0
-        change = 3
-        print("Distance between marker", markertvec[x][0], "and", markertvec[x+change][0])
-        dist1 = np.linalg.norm(markertvec[x][1]-markertvec[x+change][1])
+        y = 3
+        print("Distance between marker", markertvec[x][0], "and", markertvec[y][0])
+        dist1 = np.linalg.norm(markertvec[x][1]-markertvec[y][1])
         print(dist1)
 
 
