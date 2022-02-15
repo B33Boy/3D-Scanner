@@ -63,8 +63,6 @@ offset = 0
 
 count = 0
 
-cam = cv2.VideoCapture(0)
-
 while True:
     ret, frame = cam.read()
     if not ret:
@@ -72,9 +70,9 @@ while True:
         break
 
     # First undistort
-    frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
+    undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
-    frame, _ = extract_laser(frame)
+    frame, _ = extract_laser(undist)
 
     # Rotate frame 180 degrees
     frame = cv2.rotate(frame, cv2.ROTATE_180)
@@ -89,9 +87,14 @@ while True:
     # Capture image if spacebar is pressed
     elif k%256 == 32:
         # img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
-        img_name = f"res/pose_samples/pose_{count}.png"
+        img_name = f"res/pose_samples/pose_laser_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
+
+        undist_name = f"res/pose_samples/pose_undist_{count}.png"
+        cv2.imwrite(undist_name, undist)
+        print("{} written!".format(undist_name))
+
         count += 1
 
 cam.release()
