@@ -29,10 +29,13 @@ def customAruco():
     parameters.errorCorrectionRate = 0.2
     return aruco_dict, parameters
 
+def getArucoDist():
+    pass
+
 
 def main():
     # Initialization value for image. Change to location of image
-    file_name = "res\marker_test\marker_4.png"
+    file_name = "res\marker_test\marker_4_bright.png"
     aruco_dict, arucoParams = customAruco()
     
     '''
@@ -49,8 +52,8 @@ def main():
     with np.load('res/cal_out/cam_params.npz') as X:
         camera_matrix, dist_coeffs = [X[i] for i in ('mtx','dist')]
     
-    print(camera_matrix)
-    print(dist_coeffs)
+    #print(camera_matrix)
+    #print(dist_coeffs)
     '''
     camera_reader = cv2.FileStorage()
     camera_reader.open("cameraParameters.xml",cv2.FileStorage_READ)
@@ -73,16 +76,27 @@ def main():
     #ret, ch_corners, ch_ids = aruco.interpolateCornersCharuco(corners, ids, gray, board )
     #print(ch_ids)
     #cv2.aruco.drawDetectedCornersCharuco(frame,ch_corners,ch_ids,(0,0,255) )
-
-    #retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard( ch_corners, ch_ids, board, camera_matrix, dist_coeffs)
-    for i in range(0, len(ids)):  # Iterate in markers
-        # Estimate pose of each marker and return the values rvec and tvec---different from camera coefficients
-        rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.015, camera_matrix,dist_coeffs)
-        print("Rvec", rvec)
-        print("Tvec",  tvec)
-        cv2.aruco.drawDetectedMarkers(frame, corners, ids)
-        cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.01)
-
+    markertvec = []
+    if len(ids) > 0:
+        #retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard( ch_corners, ch_ids, board, camera_matrix, dist_coeffs)
+        for i in range(0, len(ids)):  # Iterate in markers
+            # Estimate pose of each marker and return the values rvec and tvec---different from camera coefficients
+            rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 3, camera_matrix,dist_coeffs)
+            #print("Rvec", rvec)
+            #print("Tvec",  tvec)
+            temp = [ids[i], tvec]
+            markertvec.append(temp)
+            cv2.aruco.drawDetectedMarkers(frame, corners, ids)
+            cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.001)
+            print("marker", ids[i] , "Tvec: ", tvec)
+        print(len(markertvec))
+        
+        
+        x = 0
+        change = 2
+        print("Distance between marker", markertvec[x][0], "and", markertvec[x+change][0])
+        dist1 = np.linalg.norm(markertvec[x][1]-markertvec[x+change][1])
+        print(dist1)
 
 
     # Draw image or quit
