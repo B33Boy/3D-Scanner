@@ -2,6 +2,16 @@ import cv2
 import numpy as np
 
 
+def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
+
+    # undistort
+    dst = cv2.undistort(img, mtx, dist, None, new_mtx)
+    
+    # crop the image
+    x, y, w, h = roi
+    return dst[y:y+h, x:x+w]
+
+
 def extract_laser(frame): 
     
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -15,7 +25,7 @@ def extract_laser(frame):
     
     # Isolate the red channel
     img = frame[...,2]
-    ret,img = cv2.threshold(img,225,255,0)
+    ret,img = cv2.threshold(img,144,255,0)
 
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
@@ -29,7 +39,22 @@ def extract_laser(frame):
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(out,out, mask= mask)
     
-    return res
+    return res, bppr
+
+
+# Load camera calibration data from cam_out folder
+with np.load('res/cal_out/cam_params.npz') as X:
+    mtx, dist, rvecs, tvecs = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
+
+# Start the video capture
+cam = cv2.VideoCapture(0)
+
+# Obtain the width and height of the camera
+w = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+h = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# Undistort Camera Matrix + ROI
+new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
 # Global vars
 x = 4 # dist b/w camera and laser in inches
@@ -46,7 +71,10 @@ while True:
         print("failed to grab frame")
         break
 
-    frame = extract_laser(frame)
+    # First undistort
+    frame = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
+
+    frame, _ = extract_laser(frame)
 
     # Rotate frame 180 degrees
     frame = cv2.rotate(frame, cv2.ROTATE_180)
@@ -60,7 +88,8 @@ while True:
         break
     # Capture image if spacebar is pressed
     elif k%256 == 32:
-        img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
+        # img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
+        img_name = f"res/pose_samples/pose_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
         count += 1
