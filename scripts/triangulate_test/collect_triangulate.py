@@ -69,13 +69,14 @@ while True:
         print("failed to grab frame")
         break
 
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
+    
     # First undistort
     undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
     frame, _ = extract_laser(undist)
 
     # Rotate frame 180 degrees
-    frame = cv2.rotate(frame, cv2.ROTATE_180)
     cv2.imshow("Calibrate_theta", frame)
 
     k = cv2.waitKey(1)
