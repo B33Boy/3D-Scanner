@@ -91,7 +91,7 @@ def main():
         #retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard( ch_corners, ch_ids, board, camera_matrix, dist_coeffs)
         for i in range(0, len(ids)):  # Iterate in markers
             # Estimate pose of each marker and return the values rvec and tvec---different from camera coefficients
-            rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 3, camera_matrix,dist_coeffs)
+            rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 3, new_mtx, dist_coeffs)
             #print("Rvec", rvec)
             #print("Tvec",  tvec)
             temp = [ids[i], tvec]
