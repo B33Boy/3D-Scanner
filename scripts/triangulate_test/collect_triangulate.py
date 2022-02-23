@@ -88,11 +88,11 @@ while True:
     # Capture image if spacebar is pressed
     elif k%256 == 32:
         # img_name = f"res/calibration_theta_input/dist_{count}_{D[count]}.png"
-        img_name = f"res/pose_samples/pose_c_laser_{count}.png"
+        img_name = f"res/pose_samples/aruco_laser_{count}.png"
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
 
-        undist_name = f"res/pose_samples/pose_c_undist_{count}.png"
+        undist_name = f"res/pose_samples/aruco_undist_{count}.png"
         cv2.imwrite(undist_name, undist)
         print("{} written!".format(undist_name))
 
