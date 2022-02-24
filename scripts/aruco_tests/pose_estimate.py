@@ -6,10 +6,6 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from util import extract_laser, undistort_camera
 
-def read_node_matrix( reader, name ):
-    node = reader.getNode( name )
-    return node.mat()
-
 def customAruco():
     # define an empty custom dictionary with 
     aruco_dict = cv2.aruco.custom_dictionary(0, 5, 1)
@@ -38,7 +34,7 @@ def getArucoDist():
 
 def main():
     # Initialization value for image. Change to location of image
-    file_name = "res\marker_test\marker_4_bright.png"
+    file_name = "res\pose_samples\pose_c_undist_4.png"
     aruco_dict, arucoParams = customAruco()
     
     '''
@@ -97,17 +93,19 @@ def main():
             temp = [ids[i], tvec]
             markertvec.append(temp)
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
-            cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, 0.001)
+            cv2.aruco.drawAxis(frame, new_mtx, dist_coeffs, rvec, tvec, 5)
             print("marker", ids[i] , "Tvec: ", tvec)
-        print(len(markertvec))
+            
+            if ids[i] == 3:
+                print("noqw")
         
-        
-        x = 0
-        y = 3
+    '''     
+        x = 2
+        y = 1
         print("Distance between marker", markertvec[x][0], "and", markertvec[y][0])
         dist1 = np.linalg.norm(markertvec[x][1]-markertvec[y][1])
         print(dist1)
-
+    '''
 
     # Draw image or quit
     cv2.imshow('Image', frame)
