@@ -92,6 +92,14 @@ ret, matrix, distortion, r_vecs, t_vecs = cv2.calibrateCamera(
 	threedpoints, twodpoints, grayColor.shape[::-1], None, None)
 
 
+mean_error = 0
+for i in range(len(threedpoints)):
+    imgpoints2, _ = cv2.projectPoints(threedpoints[i], r_vecs[i], t_vecs[i], twodpoints, distortion)
+    error = cv2.norm(twodpoints[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
+    mean_error += error
+print( "total error: {}".format(mean_error/len(threedpoints)) )
+
+
 # Displaying required output
 print(" Camera matrix:")
 print(matrix)
