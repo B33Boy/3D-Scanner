@@ -1,0 +1,5 @@
+
+Batch 1: total error: 0.04226886515476735 
+Batch 2: total error: 0.04158816786163255
+Batch 3: total error: 0.03657825064618742
+Batch 4: total error: 0.04517589648384811
