@@ -92,7 +92,7 @@ while True:
         #cv2.imwrite(img_name, frame)
         #print("{} written!".format(img_name))
 
-        undist_name = f"res/pose_samples/blank_plane/aruco_undist_{count}.png"
+        undist_name = f"res/pose_samples/charuco/charuco_undist_{count}.png"
         cv2.imwrite(undist_name, undist)
         print("{} written!".format(undist_name))
 
