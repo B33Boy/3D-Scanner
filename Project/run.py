@@ -42,6 +42,7 @@ def read_charuco(dt, image):
     allCorners = []
     allIds = []
     decimator = 0
+    charuco_detected = False
     
     #SUB PIXEL CORNER DETECTION CRITERIA
     criteria = (cv2.TermCriteria_EPS + cv2.TermCriteria_MAX_ITER, 100, 0.00001)
@@ -62,6 +63,7 @@ def read_charuco(dt, image):
     
     try:
         if len(corners) > 0:
+            print("Charuco detected with {} corners".format(len(corners)))
             for corner in corners:
                 cv2.cornerSubPix(gray, corner, winSize= (3,3), zeroZone= (-1,-1), criteria= criteria)
             res2 = cv2.aruco.interpolateCornersCharuco(corners, ids, gray, board)
@@ -69,6 +71,7 @@ def read_charuco(dt, image):
                 allCorners.append(res2[1])
                 allIds.append(res2[2])
             flash_green_LED()
+            charuco_detected = True
     except:
         print("*Unable to get pose")
         flash_red_LED()
@@ -76,7 +79,7 @@ def read_charuco(dt, image):
     decimator += 1
     imsize = gray.shape
     
-    return allCorners, allIds, imsize, gray
+    return allCorners, allIds, imsize, gray, charuco_detected
         
 
 def flash_red_LED():
@@ -109,7 +112,11 @@ def main():
         #undistort the image before processing 
         img_undistort = cv2.undistort(frame, cameraMatrix= camera_matrix, distCoeffs= dist_coeffs)
         
-        allCorners,allIds,imsize, gray =read_charuco(dt= dt, image= img_undistort)
+        allCorners,allIds,imsize, gray, charuco_detected =read_charuco(dt= dt, image= img_undistort)
+        
+        if(charuco_detected):
+            pass
+            # if board is detected, run pose calculations and laser isolation and triangulation
         
         # Display the resulting frame
         cv2.imshow('frame', img_undistort) #remove later
