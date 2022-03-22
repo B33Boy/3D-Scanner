@@ -69,7 +69,7 @@ def print_axes(undist, aruco_dict, parameters, board, mtx):
                 im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, np.array([0.0,0.0,0.0,0.0,0.0]).reshape(1,5), rvec, tvec, 100)
                 return im_with_charuco_board
             
-    return undist
+    return gray
 
 while True:
     ret, frame = cam.read()
@@ -118,8 +118,7 @@ while True:
             print("Brightness test image {} written!".format(img_name))
         
         elif args.test == 'i':
-            if count == 0:
-                img_name = f"res/unit_tests/pose_est/interference/interference_{count}.png"
+            img_name = f"res/unit_tests/pose_est/interference/interference_{count}.png"
             
             cv2.imwrite(img_name, axes_img)
             print("Brightness test image {} written!".format(img_name))
