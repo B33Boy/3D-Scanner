@@ -48,25 +48,28 @@ def print_axes(undist, aruco_dict, parameters, board, mtx):
     gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict,
                                                           parameters=parameters)
-    # SUB PIXEL DETECTION
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.0001)
-    for corner in corners:
-        cv2.cornerSubPix(gray, corner, winSize = (3,3), zeroZone = (-1,-1), criteria = criteria)
 
-    # frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
-    empty_dist = np.array([0,0,0,0,0]).reshape(1,5)
-    
-    charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
-    if charucoretval:
+    if ids is not None:
 
-        im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
-        retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False)  # posture estimation from a charuco board
-    
-        if retval:
-            im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, np.array([0.0,0.0,0.0,0.0,0.0]).reshape(1,5), rvec, tvec, 100)
-            return im_with_charuco_board
+        # SUB PIXEL DETECTION
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.0001)
+        for corner in corners:
+            cv2.cornerSubPix(gray, corner, winSize = (3,3), zeroZone = (-1,-1), criteria = criteria)
+
+        # frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
+        empty_dist = np.array([0,0,0,0,0]).reshape(1,5)
         
-        return undist
+        charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
+        if charucoretval:
+
+            im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
+            retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False)  # posture estimation from a charuco board
+        
+            if retval:
+                im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, np.array([0.0,0.0,0.0,0.0,0.0]).reshape(1,5), rvec, tvec, 100)
+                return im_with_charuco_board
+            
+    return undist
 
 while True:
     ret, frame = cam.read()
