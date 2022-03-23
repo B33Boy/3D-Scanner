@@ -83,7 +83,7 @@ while True:
     # First undistort
     undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
-    axes_img, rvec, tvec = print_axes(undist, aruco_dict, parameters, board, new_mtx)
+    axes_img = print_axes(undist, aruco_dict, parameters, board, new_mtx)
 
     cv2.imshow("Pose estimate charuco", axes_img)
 
@@ -99,11 +99,6 @@ while True:
             if count < 5:
                 img_name = f"res/unit_tests/pose_est/accuracy/charuco_{count}.png"
                 cv2.imwrite(img_name, axes_img)
-
-                with open("accuracy_tvec.txt", "ab") as f:
-                    f.write(b"\n")
-                    np.savetxt(f, tvec)
-
                 print("Charuco {} written!".format(img_name))
             
             if count >= 5 and count < 10:
@@ -121,16 +116,11 @@ while True:
             
             cv2.imwrite(img_name, axes_img)
             print("Brightness test image {} written!".format(img_name))
-            with open("brightness_tvec.txt", "ab") as f:
-                f.write(b"\n")
-                np.savetxt(f, tvec)
         
         elif args.test == 'i':
             img_name = f"res/unit_tests/pose_est/interference/interference_{count}.png"
-            with open("interference_tvec.txt", "ab") as f:
-                f.write(b"\n")
-                np.savetxt(f, tvec)
-                cv2.imwrite(img_name, axes_img)
+            
+            cv2.imwrite(img_name, axes_img)
             print("Brightness test image {} written!".format(img_name))
 
 
