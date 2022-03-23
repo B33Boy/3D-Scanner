@@ -38,7 +38,6 @@ new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
 count = 0
 
-
 # Aruco prep
 aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_250)
 board = aruco.CharucoBoard_create(11, 8, 1.5, 1.2, aruco_dict)

@@ -69,7 +69,6 @@ new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 count = 0
 
 
-
 while True:
     ret, frame = cam.read()
     if not ret:
@@ -82,9 +81,9 @@ while True:
     # First undistort
     undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
-    #laser = extract_laser(undist)
+    laser = extract_laser(undist)
 
-    cv2.imshow("Laser isolation", undist)
+    cv2.imshow("Laser isolation", laser)
 
     k = cv2.waitKey(1)
 
@@ -97,20 +96,10 @@ while True:
     elif k%256 == 32:
 
         if args.test == 'a':
-            pass
-
-        elif args.test == 'b':
-            if count%2 == 0:
-                img_name = f"res/unit_tests/laser_iso/laser_on_{count}.png"
-            if count%2 == 1:
-                img_name = f"res/unit_tests/laser_iso/laser_off_{count}.png"
+            img_name = f"res/unit_tests/laser_iso/accuracy/laser_{count}.png"
 
             cv2.imwrite(img_name, undist)
             print("Laser {} written!".format(img_name))
-        
-        elif args.test == 'i':
-            pass
-
 
         count += 1
 
