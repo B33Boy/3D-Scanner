@@ -69,7 +69,7 @@ def print_axes(undist, aruco_dict, parameters, board, mtx):
                 im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, np.array([0.0,0.0,0.0,0.0,0.0]).reshape(1,5), rvec, tvec, 100)
                 return im_with_charuco_board, rvec, tvec
             
-    return gray
+    return gray, None, None
 
 while True:
     ret, frame = cam.read()
@@ -99,12 +99,11 @@ while True:
             if count < 5:
                 img_name = f"res/unit_tests/pose_est/accuracy/charuco_{count}.png"
                 cv2.imwrite(img_name, axes_img)
-
-                with open("accuracy_tvec.txt", "ab") as f:
-                    f.write(b"\n")
-                    np.savetxt(f, tvec)
-
-                print("Charuco {} written!".format(img_name))
+                if tvec is not None:
+                    with open("res/unit_tests/pose_est/accuracy/accuracy_tvec.txt", "ab") as f:
+                        f.write(b"\n")
+                        np.savetxt(f, tvec)
+                        print("Charuco {} written!".format(img_name))
             
             if count >= 5 and count < 10:
                 img_name = f"res/unit_tests/pose_est/accuracy/aruco_{count}.png"
@@ -119,19 +118,21 @@ while True:
             elif count == 2:
                 img_name = "res/unit_tests/pose_est/brightness/charuco_bright.png"
             
-            cv2.imwrite(img_name, axes_img)
-            print("Brightness test image {} written!".format(img_name))
-            with open("brightness_tvec.txt", "ab") as f:
-                f.write(b"\n")
-                np.savetxt(f, tvec)
-        
+            if tvec is not None:
+                with open("res/unit_tests/pose_est/brightness/brightness_tvec.txt", "ab") as f:
+                    f.write(b"\n")
+                    np.savetxt(f, tvec)
+                    cv2.imwrite(img_name, axes_img)
+                    print("Brightness test image {} written!".format(img_name))
+
         elif args.test == 'i':
             img_name = f"res/unit_tests/pose_est/interference/interference_{count}.png"
-            with open("interference_tvec.txt", "ab") as f:
-                f.write(b"\n")
-                np.savetxt(f, tvec)
-                cv2.imwrite(img_name, axes_img)
-            print("Brightness test image {} written!".format(img_name))
+            if tvec is not None:
+                with open("res/unit_tests/pose_est/interference/interference_tvec.txt", "ab") as f:
+                    f.write(b"\n")
+                    np.savetxt(f, tvec)
+                    cv2.imwrite(img_name, axes_img)
+                    print("Brightness test image {} written!".format(img_name))
 
 
         count += 1
