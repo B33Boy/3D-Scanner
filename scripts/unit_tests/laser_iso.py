@@ -81,7 +81,9 @@ while True:
     # First undistort
     undist = undistort_camera(frame, mtx, new_mtx, roi, dist, w, h)
 
-    laser = extract_laser(undist)
+   # undist = frame
+
+    laser, bppr = extract_laser(undist)
 
     cv2.imshow("Laser isolation", laser)
 
@@ -98,7 +100,7 @@ while True:
         if args.test == 'a':
             img_name = f"res/unit_tests/laser_iso/accuracy/laser_{count}.png"
 
-            cv2.imwrite(img_name, undist)
+            cv2.imwrite(img_name, laser)
             print("Laser {} written!".format(img_name))
 
         count += 1
