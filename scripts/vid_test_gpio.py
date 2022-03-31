@@ -6,10 +6,11 @@ from gpiozero import Button, LED
 from time import sleep
 
 # Define GPIO Pin I/O
-ledGreen = LED(23)
-ledRed = LED(24)
-btnStart = Button(17, pull_up = True)
-btnStop = Button(27, pull_up = True)
+ledGreen = LED(24)
+ledRed = LED(23)
+
+btnStart = Button(2, pull_up=True)
+btnStop = Button(3, pull_up=True)
 
 # define a video capture object
 vid = cv2.VideoCapture(0)
@@ -41,14 +42,34 @@ def offState():
     
 #     onFlag = not onFlag
 
+#btnStart.when_pressed = onState
+#btnStop.when_pressed = offState
+
+#while True:
+from signal import pause
+def test():
+    print("Start")
+    global onFlag
+    onFlag = True
+    ledRed.on()
+
+
+def test2():
+    print("Stop")
+    global onFlag
+    onFlag = False
+    ledRed.off()
+
 while(True):
-    btnStart.when_pressed = onState
-    btnStop.when_pressed = offState
+   
+
+    btnStart.when_pressed = test
+    btnStop.when_pressed = test2 
 
     # Capture the video frame
     # by frame
     ret, frame = vid.read()
-
+    
     # Rotate frame 180 degrees
     frame = cv2.rotate(frame, cv2.ROTATE_180)
 
@@ -79,3 +100,5 @@ while(True):
 vid.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
+
+
