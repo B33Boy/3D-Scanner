@@ -8,8 +8,8 @@ from time import sleep
 # Define GPIO Pin I/O
 ledGreen = LED(23)
 ledRed = LED(24)
-btnStart = Button(17)
-btnStop = Button(27)
+btnStart = Button(17, pull_up = True)
+btnStop = Button(27, pull_up = True)
 
 # define a video capture object
 vid = cv2.VideoCapture(0)
@@ -26,7 +26,7 @@ def offState():
     onFlag = False
     ledRed.off()
 
-#TODO: MODIFY CODE TO TOGGLE WITH ONE BUTTON AND SAVE DATA WITH ANOTHER
+# TODO: MODIFY CODE TO TOGGLE WITH ONE BUTTON AND SAVE DATA WITH ANOTHER
 # def onState():
 #     print("SOPPING RECORDING")
 #     ledRed.on()
