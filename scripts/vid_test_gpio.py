@@ -3,7 +3,6 @@
 # import the opencv library
 import cv2
 from gpiozero import Button, LED
-from time import sleep
 
 # Define GPIO Pin I/O
 ledGreen = LED(24)
