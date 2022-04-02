@@ -9,7 +9,7 @@ def main():
     prev_value = None
 
     # Pin Setup:
-    GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
+    GPIO.setmode(GPIO.BCM)  # BOARD pin-numbering scheme
     GPIO.setup(led_pin, GPIO.OUT)  # LED pin set as output
     GPIO.setup(but_pin, GPIO.IN)  # Button pin set as input
 
