@@ -314,6 +314,7 @@ def startScan():
 def stopScan():
     print("Stopping Scan")
     global scanFlag
+    global onFlag
     scanFlag = False
     onFlag = False
     ledRed.off()
@@ -326,7 +327,7 @@ def flash_green_LED():
 #main function
 def main():
     vid = cv2.VideoCapture(0)
-
+    global onFlag
     while onFlag:
            
         btnStart.when_pressed = startScan 
