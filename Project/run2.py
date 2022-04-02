@@ -38,7 +38,8 @@ aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_250)
 board = aruco.CharucoBoard_create(11, 8, 1.5, 1.2, aruco_dict)
 parameters =  aruco.DetectorParameters_create()
 
-onFlag = False
+onFlag = True
+scanFlag = False
 
 """
     Define IO pins
@@ -306,13 +307,14 @@ def read_charuco(dt, image):
 
 def startScan():
     print("Starting Scan")
-    global onFlag
-    onFlag = True
+    global scanFlag
+    scanFlag = True
     ledRed.on()
 
 def stopScan():
     print("Stopping Scan")
-    global onFlag
+    global scanFlag
+    scanFlag = False
     onFlag = False
     ledRed.off()
 
@@ -324,8 +326,6 @@ def flash_green_LED():
 #main function
 def main():
     vid = cv2.VideoCapture(0)
-    global onFlag
-    onFlag = True
 
     while onFlag:
            
@@ -350,6 +350,9 @@ def main():
         #     pass
         #     # if board is detected, run pose calculations and laser isolation and triangulation
         
+        if scanFlag:
+            print("Scan Flag True")
+
         # Display the resulting frame
         cv2.imshow('frame', frame)
         cv2.imshow('undist', undist) 
@@ -359,6 +362,7 @@ def main():
         # desired button of your choice
         if cv2.waitKey(1) & 0xFF == ord('q'):
             onFlag = False
+            scanFlag = False
             break
     
     # After the loop release the cap object
@@ -366,6 +370,8 @@ def main():
     # Destroy all the windows
     cv2.destroyAllWindows()
 
+
+    print("Program Finished")
 
 
 
