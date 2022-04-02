@@ -39,10 +39,19 @@ parameters =  aruco.DetectorParameters_create()
 
 onFlag = False
 
+"""
+    Define IO pins
+"""
+ledGreen = LED(24)
+ledRed = LED(23)
+
+btnStart = Button(2, pull_up=True)
+btnStop = Button(3, pull_up=True)
+
 '''
     Camera Calibration
 '''
-with np.load('res/cal_out/cam_params.npz') as X:
+with np.load('res/cal_out/cam_params_charuco.npz') as X:
     camera_matrix, dist_coeffs = [X[i] for i in ('mtx','dist')]
     
 '''
@@ -298,13 +307,14 @@ def startScan():
     print("Starting Scan")
     global onFlag
     onFlag = True
-    # ledRed.on()
+    main()
+    ledRed.on()
 
 def stopScan():
     print("Stopping Scan")
     global onFlag
     onFlag = False
-    # ledRed.off()
+    ledRed.off()
 
 def flash_green_LED():
     pass
@@ -315,7 +325,9 @@ def flash_green_LED():
 def main():
     vid = cv2.VideoCapture(0)
 
-    while True:
+    while onFlag:
+        
+        btnStop.when_pressed = stopScan
 
         # Capture the video frame by frame
         ret, frame = vid.read()
@@ -344,7 +356,7 @@ def main():
         # desired button of your choice
         if cv2.waitKey(1) & 0xFF == ord('q'):
             onFlag = False
-            break
+            # break
     
     # After the loop release the cap object
     vid.release()
@@ -356,4 +368,5 @@ def main():
 
 #run the main function
 if __name__ == '__main__':
-    main()
+    while True:
+        btnStart.when_pressed = startScan
