@@ -102,11 +102,11 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
         charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
         im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
         retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, np.array([0.0, 0.0, 0.0, 0.0, 0.0]).reshape(1,5), rvec = False, tvec = False)
-        im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, empty_dist, rvec, tvec, 100)
+        # im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, empty_dist, rvec, tvec, 100)
 
-        return retval, rvec, tvec, im_with_charuco_board
+        return retval, rvec, tvec #, im_with_charuco_board
     else:
-        return False, 0, 0, 0 # 0s are to ensure three values are returned
+        return False, 0, 0 #, 0 # 0s are to ensure three values are returned
 
 def extract_laser(frame): 
     """_summary_
@@ -381,13 +381,14 @@ def main():
             retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, camera_matrix)
 
             if retval:
-
-                cv2.imshow('undist', img_axis)
+                print("found markers")
+                print(rvec, tvec, "\n")
+                # cv2.imshow('undist', img_axis)
 
                 # Place text to show scanFlag
-                cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
-            else:
-                cv2.imshow('undist', undist) 
+                # cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
+
+            cv2.imshow('undist', undist) 
 
         # the 'q' button is set as the
         # quitting button you may use any
