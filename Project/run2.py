@@ -59,6 +59,15 @@ with np.load('res/cal_out/cam_params.npz') as X:
 '''
     Functions and Helpers
 '''
+def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
+
+    # undistort
+    dst = cv2.undistort(img, mtx, dist, None, new_mtx)
+    
+    # crop the image
+    x, y, w, h = roi
+    return dst[y:y+h, x:x+w]
+
 def get_itf(rvec, tvec):
     """ Function that takes in 3x1 rvec and tvec representing the transformation from marker coords to camera coords, and outputs the 4x4 transformation matrix from camera coords to marker coords. 
 
@@ -229,7 +238,6 @@ def transformed_points(undist):
         print("Could not perform pose detection on current frame!")
         return None
    
-
 def exportPointCloud(point_cloud):
     """ Exports the point cloud into a ply file
 
@@ -308,7 +316,6 @@ def read_charuco(dt, image):
     
     return allCorners, allIds, imsize, gray, charuco_detected
         
-
 def startScan():
     print("Starting Scan")
     global scanFlag
@@ -329,9 +336,19 @@ def flash_green_LED():
 
 #main function
 def main():
-    vid = cv2.VideoCapture(0)
+
+    # Global variables that are going to be accessed/modified in the loop
     global onFlag
     global scanFlag
+
+    vid = cv2.VideoCapture(0)
+
+    # Obtain the width and height of the camera
+    w = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+    h = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    
+    # Undistort Camera Matrix + ROI
+    new_mtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coeffs, (w,h), 1, (w,h))
 
     # For displaying text on imshow
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -355,7 +372,8 @@ def main():
         frame = cv2.rotate(frame, cv2.ROTATE_180)
         
         #undistort the image before processing 
-        undist = cv2.undistort(frame, cameraMatrix=camera_matrix, distCoeffs=dist_coeffs)
+        # undist = cv2.undistort(frame, cameraMatrix=camera_matrix, distCoeffs=dist_coeffs)
+        undist = undistort_camera(frame, camera_matrix, new_mtx, roi, dist_coeffs, w, h)
         
         
         if scanFlag:
@@ -364,11 +382,14 @@ def main():
 
             if retval:
                 print("found markers")
-                print(rvec, tvec, "\n")
-                cv2.imshow('undist', img_axis)
+                # print(rvec, tvec, "\n")
+
+
 
                 # Place text to show scanFlag
-                # cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
+                cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
+                cv2.imshow('undist', img_axis)
+
             else:
                 cv2.imshow('undist', undist) 
 
