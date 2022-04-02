@@ -103,11 +103,11 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
         # im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
         retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, np.array([0.0, 0.0, 0.0, 0.0, 0.0]).reshape(1,5), rvec = False, tvec = False)
         
-        im_with_charuco_board = aruco.drawAxis(gray, mtx, empty_dist, rvec, tvec, 100)
+        if retval:
+            im_with_charuco_board = aruco.drawAxis(gray, mtx, empty_dist, rvec, tvec, 100)
+            return retval, rvec, tvec, im_with_charuco_board
 
-        return retval, rvec, tvec, im_with_charuco_board
-    else:
-        return False, 0, 0 , 0 # 0s are to ensure three values are returned
+    return False, 0, 0, 0 # 0s are to ensure three values are returned
 
 def extract_laser(frame): 
     """_summary_
