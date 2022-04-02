@@ -3,7 +3,7 @@ import os
 
 vid = cv2.VideoCapture(0)
 
-output_dir = r'res/cal_in/'
+output_dir = r'res/cal_in/batch_charuco/'
 
 img_count = 0
 

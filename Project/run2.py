@@ -384,8 +384,6 @@ def main():
                 print("found markers")
                 # print(rvec, tvec, "\n")
 
-
-
                 # Place text to show scanFlag
                 cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
                 cv2.imshow('undist', img_axis)
@@ -409,7 +407,6 @@ def main():
     cv2.destroyAllWindows()
 
     print("Program Finished")
-
 
 
 #run the main function
