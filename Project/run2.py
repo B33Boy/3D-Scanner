@@ -328,6 +328,8 @@ def flash_green_LED():
 def main():
     vid = cv2.VideoCapture(0)
     global onFlag
+    global scanFlag
+    
     while onFlag:
            
         btnStart.when_pressed = startScan 
