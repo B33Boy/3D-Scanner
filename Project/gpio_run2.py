@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import cv2
 
-but_pin =18
+but_pin =2
 def main():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(but_pin,GPIO.IN)
