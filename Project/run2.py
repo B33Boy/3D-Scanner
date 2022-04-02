@@ -52,7 +52,7 @@ btnStop = Button(3, pull_up=True)
 '''
     Camera Calibration
 '''
-with np.load('res/cal_out/cam_params_charuco.npz') as X:
+with np.load('res/cal_out/cam_params.npz') as X:
     camera_matrix, dist_coeffs = [X[i] for i in ('mtx','dist')]
     
 '''
@@ -324,15 +324,14 @@ def flash_green_LED():
 #main function
 def main():
     vid = cv2.VideoCapture(0)
-    
-    btnStart.when_pressed = startScan 
-    pause()
-    print("Started Scan")
+    global onFlag
+    onFlag = True
 
     while onFlag:
            
+        btnStart.when_pressed = startScan 
         btnStop.when_pressed = stopScan 
-
+        
         # Capture the video frame by frame
         ret, frame = vid.read()
         
