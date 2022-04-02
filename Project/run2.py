@@ -97,14 +97,16 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
         for corner in corners:
             cv2.cornerSubPix(gray, corner, winSize = (3,3), zeroZone = (-1,-1), criteria = criteria)
 
-        empty_dist = np.array([0,0,0,0,0]).reshape(1,5)
+        empty_dist = np.array([0.0, 0.0, 0.0, 0.0, 0.0]).reshape(1,5)
 
         charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
         im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
-        retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False) 
-        return retval, rvec, tvec
+        retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False)
+        im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, empty_dist, rvec, tvec, 100)
+
+        return retval, rvec, tvec, im_with_charuco_board
     else:
-        return False, 0, 0 # 0s are to ensure three values are returned
+        return False, 0, 0, 0 # 0s are to ensure three values are returned
 
 def extract_laser(frame): 
     """_summary_
@@ -226,6 +228,24 @@ def transformed_points(undist):
         print("Could not perform pose detection on current frame!")
         return None
 
+# def print_axes(undist, aruco_dict, parameters, board, mtx):
+#     gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
+#     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict,
+#                                                           parameters=parameters)
+#     # SUB PIXEL DETECTION
+#     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.0001)
+#     for corner in corners:
+#         cv2.cornerSubPix(gray, corner, winSize = (3,3), zeroZone = (-1,-1), criteria = criteria)
+
+#     # frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
+#     empty_dist = np.array([0,0,0,0,0]).reshape(1,5)
+    
+#     charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
+#     im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
+#     retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False)  # posture estimation from a charuco board
+#     im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, np.array([0.0,0.0,0.0,0.0,0.0]).reshape(1,5), rvec, tvec, 100)
+    
+
 def exportPointCloud(point_cloud):
     """ Exports the point cloud into a ply file
 
@@ -329,7 +349,10 @@ def main():
     vid = cv2.VideoCapture(0)
     global onFlag
     global scanFlag
-    
+
+    # For displaying text on imshow
+    font = cv2.FONT_HERSHEY_SIMPLEX
+
     while onFlag:
            
         btnStart.when_pressed = startScan 
@@ -355,10 +378,16 @@ def main():
         
         if scanFlag:
             print("Scan Flag True")
+            retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, camera_matrix)
 
-        # Display the resulting frame
-        cv2.imshow('frame', frame)
-        cv2.imshow('undist', undist) 
+            if retval:
+
+                cv2.imshow('undist', img_axis)
+
+                # Place text to show scanFlag
+                cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
+            else:
+                cv2.imshow('undist', undist) 
 
         # the 'q' button is set as the
         # quitting button you may use any
