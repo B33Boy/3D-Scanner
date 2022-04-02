@@ -364,15 +364,16 @@ def main():
         # quitting button you may use any
         # desired button of your choice
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            onFlag = False
-            scanFlag = False
+            #onFlag = False
+            #scanFlag = False
+            
+            stopScan()
             break
     
     # After the loop release the cap object
     vid.release()
     # Destroy all the windows
     cv2.destroyAllWindows()
-
 
     print("Program Finished")
 
