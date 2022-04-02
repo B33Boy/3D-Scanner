@@ -101,7 +101,7 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
 
         charucoretval, charucoCorners, charucoIds = aruco.interpolateCornersCharuco(corners, ids, gray, board)
         im_with_charuco_board = cv2.aruco.drawDetectedCornersCharuco(gray, charucoCorners, charucoIds, (0,255,0))
-        retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, empty_dist, rvec = False, tvec = False)
+        retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charucoCorners, charucoIds, board, mtx, np.array([0.0, 0.0, 0.0, 0.0, 0.0]).reshape(1,5), rvec = False, tvec = False)
         im_with_charuco_board = aruco.drawAxis(im_with_charuco_board, mtx, empty_dist, rvec, tvec, 100)
 
         return retval, rvec, tvec, im_with_charuco_board
