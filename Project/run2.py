@@ -244,10 +244,10 @@ def transformed_points(undist, h, w, new_mtx):
    
 def list_to_np(pt_cloud, h):
 
-    final_cloud = np.empty((3, len(pt_cloud)*h)) 
+    final_cloud = np.empty((3, len(pt_cloud)*(h-1))) 
 
     for idx, np_arr in enumerate(pt_cloud):
-        final_cloud[0:3, idx*h:idx*h+h] = np_arr[0:3,:]
+        final_cloud[0:3, idx*(h-1):idx*(h-1)+(h-1)] = np_arr[0:3,:]
     return final_cloud
 
 def exportPointCloud(point_cloud, out_file):
