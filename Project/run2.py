@@ -147,13 +147,13 @@ def extract_laser(frame):
     
     return out, bppr
 
-def get_laser_pts(img, POI):
+def get_laser_pts(img, POI, h, w, new_mtx):
     
-    # Obtain the width and height of the camera
-    h, w = img.shape
+    # # Obtain the width and height of the camera
+    # h, w = img.shape
 
-    # Get new camera matrix
-    new_mtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+    # # Get new camera matrix
+    # new_mtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coeffs, (w,h), 1, (w,h))
 
     # dist b/w camera and laser is 4 in
     X = args.dist
@@ -199,7 +199,7 @@ def get_laser_pts(img, POI):
     
     return cam_pts
 
-def transformed_points(undist):
+def transformed_points(undist, h, w, new_mtx):
     """_summary_
 
     Args:
@@ -213,7 +213,7 @@ def transformed_points(undist):
     # undist = cv2.imread(undist)
     
     # Perform pose detection on the undistorted images and obtain rvec, and tvec of the board
-    retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, camera_matrix) #########################
+    retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, new_mtx) #########################
         
     if retval:
         
@@ -222,7 +222,7 @@ def transformed_points(undist):
 
         # Perform triangulation on the laser samples and obtain mx3 matrix of points 
         laser, POI  = extract_laser(undist)
-        cam_pts = get_laser_pts(laser, POI)
+        cam_pts = get_laser_pts(laser, POI, h, w, new_mtx)
         
         # Add a column of ones to the mx3 matrix such that it is mx4
         cam_pts = np.hstack((cam_pts, np.ones((len(POI), 1))))
@@ -389,7 +389,7 @@ def main():
            
         if scanFlag:
             print("Scan Flag True")
-            retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, new_mtx)
+            retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, new_mtx) ##################
 
             if retval:
                 print("found markers")
@@ -425,7 +425,7 @@ def main():
         # Capture frame-by-frame
         ret, frame = cap.read()
 
-        tf_pts = transformed_points(frame)
+        tf_pts = transformed_points(frame, h, w, new_mtx)
         if tf_pts is not None:
             full_pt_cloud.append(tf_pts)
 
