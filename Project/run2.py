@@ -430,13 +430,15 @@ def main():
         ret, frame = vid.read()
         if ret:
             cv2.imshow('recording', frame)
-            # tf_pts = transformed_points(frame, h, w, new_mtx)
-            # if tf_pts is not None:
-            #     full_pt_cloud.append(tf_pts)
+
+            tf_pts = transformed_points(frame, h, w, new_mtx)
+            if tf_pts is not None:
+                full_pt_cloud.append(tf_pts)
+            
             # Press Q on keyboard to  exit
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 break
-            
+
         else: 
             break
 
