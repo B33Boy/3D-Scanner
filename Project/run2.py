@@ -447,7 +447,7 @@ def main():
         if ret:
             cv2.imshow('recording', frame)
 
-            tf_pts = transformed_points(frame, h, w, new_mtx)
+            tf_pts = transformed_points(frame, h, w, camera_matrix)
             if tf_pts is not None:
                 full_pt_cloud.append(tf_pts)
             
