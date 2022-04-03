@@ -210,10 +210,10 @@ def transformed_points(undist):
     """
 
     # Grab the undistorted images and laser sample pair
-    undist = cv2.imread(undist)
+    # undist = cv2.imread(undist)
     
     # Perform pose detection on the undistorted images and obtain rvec, and tvec of the board
-    retval, rvec, tvec = get_tf(undist, aruco_dict, parameters, board, mtx)
+    retval, rvec, tvec = get_tf(undist, aruco_dict, parameters, board, camera_matrix) #########################
         
     if retval:
         
@@ -389,7 +389,7 @@ def main():
            
         if scanFlag:
             print("Scan Flag True")
-            retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, camera_matrix)
+            retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, new_mtx)
 
             if retval:
                 print("found markers")
