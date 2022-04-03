@@ -99,7 +99,7 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
     Returns:
         _type_: _description_
     """
-    # gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict,
                                                           parameters=parameters)
     if ids is not None:
@@ -311,11 +311,9 @@ def read_charuco(dt, image):
             if res2[1] is not None and res2[2] is not None and len(res2[1])>3 and decimator%1 == 0:
                 allCorners.append(res2[1])
                 allIds.append(res2[2])
-            flash_green_LED()
             charuco_detected = True
     except:
         print("*Unable to get pose")
-        flash_red_LED()
             
     decimator += 1
     imsize = gray.shape
