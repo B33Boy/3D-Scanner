@@ -24,14 +24,7 @@ from gpiozero import Button, LED
 from mpl_toolkits.mplot3d import proj3d
 import matplotlib.pyplot as plt
 
-'''
-    Command Line Arguments
-'''
-parser = argparse.ArgumentParser(description='Laser Scanner Parameters')
-parser.add_argument('-d','--dist', help='distance between laser and camera in mm', default=101.6) # Note 101.6mm is 4 inches
-parser.add_argument('-t','--test', action='store_false', help='test mode on PC') # normally false, if flag called it becomes true
-args = parser.parse_args()
-
+args=0
 
 '''
     Global Variables
@@ -346,6 +339,13 @@ def stopScan():
 #main function
 def main():
 
+    parser = argparse.ArgumentParser(description='Laser Scanner Parameters')
+    parser.add_argument('-d','--dist', help='distance between laser and camera in mm', default=101.6) # Note 101.6mm is 4 inches
+    parser.add_argument('-t','--test', action='store_true', help='test mode on PC') # normally false, if flag called it becomes true
+    global args
+    args = parser.parse_args()
+
+    print (args)
     if args.test:
         print("PROGAM MODE: TEST MODE")
     else:
