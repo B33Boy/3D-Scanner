@@ -99,7 +99,7 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
     Returns:
         _type_: _description_
     """
-    gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
+    # gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict,
                                                           parameters=parameters)
     if ids is not None:
