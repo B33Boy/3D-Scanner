@@ -424,10 +424,12 @@ def main():
     
         # Capture frame-by-frame
         ret, frame = cap.read()
+        print(ret)
         if ret:
-            tf_pts = transformed_points(frame, h, w, new_mtx)
-            if tf_pts is not None:
-                full_pt_cloud.append(tf_pts)
+            cv2.imshow('recording', frame)
+            # tf_pts = transformed_points(frame, h, w, new_mtx)
+            # if tf_pts is not None:
+            #     full_pt_cloud.append(tf_pts)
 
     # release the video capture object
     cap.release()
