@@ -418,18 +418,24 @@ def main():
     print("\nProgram Finished. Processing Video")
     print(w, h)
     cap = cv2.VideoCapture(dest_file_name)
-    
+ 
+    # Check if camera opened successfully
+    if (cap.isOpened()== False): 
+        print("Error opening video  file")
+ 
     # Loop until the end of the video
     while (cap.isOpened()):
     
         # Capture frame-by-frame
         ret, frame = cap.read()
-        print(ret)
         if ret:
             cv2.imshow('recording', frame)
             # tf_pts = transformed_points(frame, h, w, new_mtx)
             # if tf_pts is not None:
             #     full_pt_cloud.append(tf_pts)
+        
+        else: 
+            break
 
     # release the video capture object
     cap.release()
