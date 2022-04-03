@@ -136,10 +136,11 @@ def extract_laser(frame):
     
     # ret,img = cv2.threshold(img,144,255,0)
 
+    # img = cv2.GaussianBlur(img,(3,3),0)
+    img = cv2.medianBlur(img, 3)
+
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
-
-    img = cv2.GaussianBlur(img,(3,3),0)
 
     # For each row, get the position of the highest intensity
     bppr = np.argmax(img, axis=1)
@@ -345,6 +346,11 @@ def stopScan():
 #main function
 def main():
 
+    if args.test:
+        print("PROGAM MODE: TEST MODE")
+    else:
+        print("PROGRAM MODE: NORMAL")
+
     # Global variables that are going to be accessed/modified in the loop
     global onFlag
     global scanFlag
@@ -459,7 +465,8 @@ def main():
 
     point_cloud = list_to_np(full_pt_cloud, h)
     
-    displayPointCloud(point_cloud)
+    if args.test:
+        displayPointCloud(point_cloud)
 
     exportPointCloud(point_cloud, f'Project/point_clouds/pc_{dt}.ply')
     
