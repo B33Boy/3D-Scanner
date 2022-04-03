@@ -264,8 +264,9 @@ def displayPointCloud(point_cloud):
     
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection='3d')
-
-    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:], color='#ff0000', cmap='viridis')
+    
+    color_map = plt.get_cmap('spring')
+    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:],c=(point_cloud[0,:] + point_cloud[1,:] + point_cloud[2,:]), cmap=color_map) #color='#ff0000', cmap='viridis')
     ax.set_title('Point Cloud')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
