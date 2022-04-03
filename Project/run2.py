@@ -98,7 +98,9 @@ def get_tf(undist, aruco_dict, parameters, board, mtx):
 
     Returns:
         _type_: _description_
+    
     """
+    print(undist.shape)
     gray = cv2.cvtColor(undist, cv2.COLOR_BGR2GRAY)
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict,
                                                           parameters=parameters)
@@ -422,10 +424,10 @@ def main():
     
         # Capture frame-by-frame
         ret, frame = cap.read()
-
-        tf_pts = transformed_points(frame, h, w, new_mtx)
-        if tf_pts is not None:
-            full_pt_cloud.append(tf_pts)
+        if ret:
+            tf_pts = transformed_points(frame, h, w, new_mtx)
+            if tf_pts is not None:
+                full_pt_cloud.append(tf_pts)
 
     # release the video capture object
     cap.release()
