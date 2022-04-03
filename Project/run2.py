@@ -14,13 +14,15 @@ Sequence:
 from datetime import datetime
 import argparse
 import os
+from signal import pause
 
 import cv2 
 from cv2 import aruco
 import numpy as np
 import open3d as o3d
 from gpiozero import Button, LED
-from signal import pause
+from mpl_toolkits.mplot3d import proj3d
+import matplotlib.pyplot as plt
 
 '''
     Command Line Arguments
@@ -228,7 +230,7 @@ def transformed_points(undist):
         # Transpose the matrix so that it is 4xm (i.e. each column is one point)
         cam_pts = cam_pts.transpose()
         
-        print("Successfully performed operation!")
+        print("Successfully obtained points for current frame!")
         
         # Multiply coordinate transofrm (4x4) for each point (4x1) to get a point that is transformed 
         return tf@cam_pts
@@ -238,7 +240,15 @@ def transformed_points(undist):
         print("Could not perform pose detection on current frame!")
         return None
    
-def exportPointCloud(point_cloud):
+def list_to_np(pt_cloud, h):
+
+    final_cloud = np.empty((3, len(pt_cloud)*h)) 
+
+    for idx, np_arr in enumerate(pt_cloud):
+        final_cloud[0:3, idx*h:idx*h+h] = np_arr[0:3,:]
+    return final_cloud
+
+def exportPointCloud(point_cloud, out_file):
     """ Exports the point cloud into a ply file
 
     Args:
@@ -246,18 +256,14 @@ def exportPointCloud(point_cloud):
     """
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(point_cloud.T)
-    dt = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-    o3d.io.write_point_cloud(f"Project/point_cloud_{dt}.ply", pcd)
+    o3d.io.write_point_cloud(out_file, pcd)
 
 def displayPointCloud(point_cloud):
-    from mpl_toolkits.mplot3d import proj3d
-
+    
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    # for out in full_pt_cloud:
-        # print(out)
-    ax.scatter(final_cloud[0,:], final_cloud[1,:], final_cloud[2,:], color='#ff0000')
+    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:], color='#ff0000')
 
     plt.show()
 
@@ -330,9 +336,6 @@ def stopScan():
     onFlag = False
     ledRed.off()
 
-def flash_green_LED():
-    pass
-
 
 #main function
 def main():
@@ -341,11 +344,11 @@ def main():
     global onFlag
     global scanFlag
 
-    vid = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0)
 
     # Obtain the width and height of the camera
-    w = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
-    h = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     # Undistort Camera Matrix + ROI
     new_mtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coeffs, (w,h), 1, (w,h))
@@ -354,9 +357,13 @@ def main():
     dt = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     _, _, w, h = roi
-    destVid = cv2.VideoWriter(f'Project/scan_{dt}.avi', fourcc, 20.0, (w,h))
+    dest_file_name = f'Project/input/scan_{dt}.avi'
+    dest_vid = cv2.VideoWriter(dest_file_name, fourcc, 20.0, (w,h))
+    
     print("Image dimensions: (", w, ",", h, ")")
     
+    # Define array to hold point cloud
+    full_pt_cloud = []
     
     # For displaying text on imshow
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -367,7 +374,7 @@ def main():
         btnStop.when_pressed = stopScan 
         
         # Capture the video frame by frame
-        ret, frame = vid.read()
+        ret, frame = cap.read()
 
         if not ret:
             print("failed to grab frame")
@@ -379,8 +386,7 @@ def main():
         #undistort the image before processing 
         # undist = cv2.undistort(frame, cameraMatrix=camera_matrix, distCoeffs=dist_coeffs)
         undist = undistort_camera(frame, camera_matrix, new_mtx, roi, dist_coeffs, w, h)
-        
-        
+           
         if scanFlag:
             print("Scan Flag True")
             retval, rvec, tvec, img_axis = get_tf(undist, aruco_dict, parameters, board, camera_matrix)
@@ -393,29 +399,47 @@ def main():
                 # Place text to show scanFlag
                 cv2.putText(img_axis, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
                 cv2.imshow('undist', img_axis)
-                destVid.write(undist)
+                dest_vid.write(undist)
             else:
                 ledGreen.off()
                 cv2.imshow('undist', undist) 
 
-        # the 'q' button is set as the
-        # quitting button you may use any
-        # desired button of your choice
+        # define q as the exit button
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            #onFlag = False
-            #scanFlag = False
-            
             stopScan()
             break
     
     # After the loop release the cap object
-    vid.release()
-    destVid.release()
+    cap.release()
+    dest_vid.release()
     # Destroy all the windows
     cv2.destroyAllWindows()
 
-    print("Program Finished")
+    print("\nProgram Finished. Processing Video")
+    print(w, h)
+    cap = cv2.VideoCapture(dest_file_name)
+    
+    # Loop until the end of the video
+    while (cap.isOpened()):
+    
+        # Capture frame-by-frame
+        ret, frame = cap.read()
 
+        tf_pts = transformed_points(frame)
+        if tf_pts is not None:
+            full_pt_cloud.append(tf_pts)
+
+    # release the video capture object
+    cap.release()
+    # Closes all the windows currently opened.
+    cv2.destroyAllWindows()  
+
+    point_cloud = list_to_np(full_pt_cloud, h)
+    
+    displayPointCloud(point_cloud)
+
+    exportPointCloud(point_cloud, f'Project/point_clouds/pc_{dt}.ply')
+    
 
 #run the main function
 if __name__ == '__main__':
