@@ -265,7 +265,11 @@ def displayPointCloud(point_cloud):
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:], color='#ff0000')
+    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:], color='#ff0000', cmap='viridis')
+    ax.set_title('Point Cloud')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
     plt.show()
 
@@ -412,6 +416,11 @@ def main():
     # After the loop release the cap object
     cap.release()
     dest_vid.release()
+    
+    #Turn off LEDs
+    ledRed.off()
+    ledGreen.off()
+
     # Destroy all the windows
     cv2.destroyAllWindows()
 
