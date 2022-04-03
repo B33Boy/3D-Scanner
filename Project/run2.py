@@ -346,10 +346,18 @@ def main():
     # Obtain the width and height of the camera
     w = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
+
     # Undistort Camera Matrix + ROI
     new_mtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coeffs, (w,h), 1, (w,h))
 
+    # Video export setup
+    dt = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    _, _, w, h = roi
+    destVid = cv2.VideoWriter(f'Project/scan_{dt}.avi', fourcc, 20.0, (w,h))
+    print("Image dimensions: (", w, ",", h, ")")
+    
+    
     # For displaying text on imshow
     font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -365,9 +373,6 @@ def main():
             print("failed to grab frame")
             break
         
-        #get the current timestamp of image 
-        dt = datetime.now()
-        
         # Rotate frame 180 degrees
         frame = cv2.rotate(frame, cv2.ROTATE_180)
         
@@ -382,13 +387,15 @@ def main():
 
             if retval:
                 print("found markers")
+                ledGreen.on()
                 # print(rvec, tvec, "\n")
 
                 # Place text to show scanFlag
-                cv2.putText(undist, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
+                cv2.putText(img_axis, "Board Found", (50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
                 cv2.imshow('undist', img_axis)
-
+                destVid.write(undist)
             else:
+                ledGreen.off()
                 cv2.imshow('undist', undist) 
 
         # the 'q' button is set as the
@@ -403,6 +410,7 @@ def main():
     
     # After the loop release the cap object
     vid.release()
+    destVid.release()
     # Destroy all the windows
     cv2.destroyAllWindows()
 
