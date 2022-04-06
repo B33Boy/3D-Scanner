@@ -18,18 +18,18 @@ def undistort_camera(img, mtx, new_mtx, roi, dist, w, h):
 
 def extract_laser(frame): 
     
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     # define range of blue color in HSV
-    lower_colour = np.array([146, 62, 0])
-    upper_colour = np.array([255, 255, 255])
+    #lower_colour = np.array([146, 62, 0])
+    #upper_colour = np.array([255, 255, 255])
     
     # Threshold the HSV image to get only get red colour
-    mask = cv2.inRange(hsv, lower_colour, upper_colour)
+    #mask = cv2.inRange(hsv, lower_colour, upper_colour)
     
     # Isolate the red channel
     img = frame[...,2]
-    ret,img = cv2.threshold(img,144,255,0)
+    #ret,img = cv2.threshold(img,144,255,0)
 
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
@@ -41,8 +41,8 @@ def extract_laser(frame):
     out[np.arange(bppr.shape[0]), bppr] = 255
     
     # Bitwise-AND mask and original image
-    res = cv2.bitwise_and(out,out, mask= mask)
-    
+    #res = cv2.bitwise_and(out,out, mask= mask)
+    res = out
     return res, bppr
 
 
