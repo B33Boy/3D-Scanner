@@ -143,6 +143,25 @@ def extract_laser(frame):
     
     return out, bppr
 
+def extract_laser_no_thresh(frame): 
+        
+    # Isolate the red channel
+    img = frame[...,2]
+    ret,img = cv2.threshold(img,230,255,0)
+
+    # Create emptry array of zeros of same size as img
+    out = np.zeros_like(img)
+
+    # For each row, get the position of the highest intensity
+    bppr = np.argmax(img, axis=1)
+
+    # Set the highest intensity pixel locations to 255
+    out[np.arange(bppr.shape[0]), bppr] = 255
+    
+    
+    return out, bppr
+
+
 def get_laser_pts(img, POI, h, w, new_mtx):
     
     # # Obtain the width and height of the camera
@@ -217,7 +236,7 @@ def transformed_points(undist, h, w, new_mtx):
         tf = get_itf(rvec, tvec)
 
         # Perform triangulation on the laser samples and obtain mx3 matrix of points 
-        laser, POI  = extract_laser(undist)
+        laser, POI  = extract_laser_no_thresh(undist)
         cam_pts = get_laser_pts(laser, POI, h, w, new_mtx)
         
         # Add a column of ones to the mx3 matrix such that it is mx4
