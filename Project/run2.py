@@ -247,7 +247,7 @@ def transformed_points(undist, h, w, new_mtx):
         tf = get_itf(rvec, tvec)
 
         # Perform triangulation on the laser samples and obtain mx3 matrix of points 
-        laser, POI  = extract_laser_old(undist)
+        laser, POI  = extract_laser(undist)
         cam_pts = get_laser_pts(laser, POI, h, w, new_mtx)
         
         # Add a column of ones to the mx3 matrix such that it is mx4
