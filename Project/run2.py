@@ -143,11 +143,20 @@ def extract_laser(frame):
     
     return out, bppr
 
-def extract_laser_no_thresh(frame): 
-        
+def extract_laser_old(frame): 
+    
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    
+    # define range of blue color in HSV
+    lower_colour = np.array([146, 62, 0])
+    upper_colour = np.array([255, 255, 255])
+    
+    # Threshold the HSV image to get only get red colour
+    mask = cv2.inRange(hsv, lower_colour, upper_colour)
+    
     # Isolate the red channel
     img = frame[...,2]
-    ret,img = cv2.threshold(img,230,255,0)
+    ret,img = cv2.threshold(img,144,255,0)
 
     # Create emptry array of zeros of same size as img
     out = np.zeros_like(img)
@@ -158,8 +167,10 @@ def extract_laser_no_thresh(frame):
     # Set the highest intensity pixel locations to 255
     out[np.arange(bppr.shape[0]), bppr] = 255
     
+    # Bitwise-AND mask and original image
+    res = cv2.bitwise_and(out,out, mask= mask)
     
-    return out, bppr
+    return res, bppr
 
 
 def get_laser_pts(img, POI, h, w, new_mtx):
@@ -236,7 +247,7 @@ def transformed_points(undist, h, w, new_mtx):
         tf = get_itf(rvec, tvec)
 
         # Perform triangulation on the laser samples and obtain mx3 matrix of points 
-        laser, POI  = extract_laser_no_thresh(undist)
+        laser, POI  = extract_laser_old(undist)
         cam_pts = get_laser_pts(laser, POI, h, w, new_mtx)
         
         # Add a column of ones to the mx3 matrix such that it is mx4
