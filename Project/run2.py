@@ -284,8 +284,22 @@ def displayPointCloud(point_cloud):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-
+    
     plt.show()
+
+def savePlot(point_cloud, out_file):
+    fig = plt.figure(figsize=(8, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    
+    color_map = plt.get_cmap('spring')
+    ax.scatter(point_cloud[0,:], point_cloud[1,:], point_cloud[2,:],c=(point_cloud[0,:] + point_cloud[1,:] + point_cloud[2,:]), cmap=color_map) #color='#ff0000', cmap='viridis')
+    ax.set_title('Point Cloud')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    
+    fig.savefig(out_file)
+    # plt.show()
 
 def read_charuco(dt, image):
     """Base pose estimation
@@ -487,6 +501,7 @@ def main():
     if args.test:
         displayPointCloud(point_cloud)
 
+    savePlot(point_cloud, f'Project/plots/plot_{dt}.png')
     exportPointCloud(point_cloud, f'Project/point_clouds/pc_{dt}.ply')
     
 
