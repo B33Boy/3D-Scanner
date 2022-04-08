@@ -247,7 +247,7 @@ def transformed_points(undist, h, w, new_mtx):
         tf = get_itf(rvec, tvec)
 
         # Perform triangulation on the laser samples and obtain mx3 matrix of points 
-        laser, POI  = extract_laser(undist)
+        laser, POI  = extract_laser_old(undist)
         cam_pts = get_laser_pts(laser, POI, h, w, new_mtx)
         
         # Add a column of ones to the mx3 matrix such that it is mx4
@@ -410,9 +410,9 @@ def main():
 
     # Video export setup
     dt = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
     _, _, w, h = roi
-    dest_file_name = f'Project/input/scan_{dt}.mp4'
+    dest_file_name = f'Project/input/scan_{dt}.avi'
     dest_vid = cv2.VideoWriter(dest_file_name, fourcc, 20.0, (w,h))
     
     print("Image dimensions: (", w, ",", h, ")")
