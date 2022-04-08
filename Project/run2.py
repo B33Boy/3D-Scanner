@@ -412,7 +412,7 @@ def main():
     dt = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     fourcc = cv2.VideoWriter_fourcc(*'MP4V')
     _, _, w, h = roi
-    dest_file_name = f'Project/input/scan_{dt}.avi'
+    dest_file_name = f'Project/input/scan_{dt}.mp4'
     dest_vid = cv2.VideoWriter(dest_file_name, fourcc, 20.0, (w,h))
     
     print("Image dimensions: (", w, ",", h, ")")
