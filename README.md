@@ -73,7 +73,7 @@ You must have linux installed with OpenCV 4.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/B33Boy/3D-Scanner.git
    ```
 2. Change to rot directory
    ```sh
