@@ -57,7 +57,7 @@ To calibrate the camera, run the following code in `3D-Scanner/` directory:
 
 <!--- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-Some stuff about the project
+Capstone 2023 Vision Based Laser Scanner
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
