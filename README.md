@@ -57,9 +57,18 @@ To calibrate the camera, run the following code in `3D-Scanner/` directory:
 
 <!--- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-Capstone 2023 Vision Based Laser Scanner
+Capstone 2022 Vision Based Laser Scanner
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<object data="https://github.com/B33Boy/3D-Scanner/blob/main/3d_scanner.pdf" type="application/pdf">
+    <embed src="https://github.com/B33Boy/3D-Scanner/blob/main/3d_scanner.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
