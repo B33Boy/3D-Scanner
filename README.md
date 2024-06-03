@@ -62,11 +62,16 @@ Capstone 2022 Vision Based Laser Scanner
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-<object data="https://github.com/B33Boy/3D-Scanner/blob/main/3d_scanner.pdf" type="application/pdf">
-    <embed src="https://github.com/B33Boy/3D-Scanner/blob/main/3d_scanner.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
+![Capstone_Poster](Capstone_Poster.png "Capstone_Poster")
+
+<br/>
+
+![3d_Scanner_1](3d_scanner_1.png "3d_Scanner_1")
+
+<br/>
+
+![3d_Scanner_2](3d_scanner_2.png "3d_Scanner_2")
+
 
 
 
